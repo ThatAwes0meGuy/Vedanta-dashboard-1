@@ -1,7 +1,14 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 
-const TailwindTable = () => {
-  return (
+const TailwindTable = ({observation, analysis}) => {
+    const [textArea, setTextArea] = useState(analysis);
+
+    // Sync state with prop when prop changes
+    useEffect(() => {
+      setTextArea(analysis);
+    }, [analysis]);
+  
+    return (
     <div className="bg-gray-100 flex items-center justify-center w-full py-8">
       <div className="w-full max-w-7xl mx-4">
         <table className="table-auto w-full bg-white shadow-lg rounded-lg overflow-hidden">
@@ -13,15 +20,16 @@ const TailwindTable = () => {
             </tr>
           </thead>
           <tbody>
-            {/* Row 1 */}
             <tr className="border-b">
               <td className="px-4 py-2 w-1/2">
-                *G value max 1.6G's at motor DE bearing & abnormal sound observed from coupling. FFT spectrum indicates 1X at motor bearings in the horizontal direction. Minor gearmesh frequency observed from gearbox shaft 1 bearing in the horizontal direction.
+                {observation.length ? observation : "Shift 1 observation"}
               </td>
               <td className="px-4 py-2 w-1/2">
                 <textarea
                   className="w-full border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-300"
                   rows="3"
+                  value={textArea}
+                  onChange={(e) => setTextArea(e.target.value)}
                   placeholder="Enter expert analysis"
                 ></textarea>
               </td>
@@ -39,7 +47,7 @@ const TailwindTable = () => {
             </tr>
             {/* Row 2 */}
             <tr className="border-b">
-              <td className="px-4 py-2 w-1/2">Row 2 Observation</td>
+              <td className="px-4 py-2 w-1/2">Shift 2 Observation</td>
               <td className="px-4 py-2 w-1/2">
                 <textarea
                   className="w-full border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-300"
@@ -61,7 +69,7 @@ const TailwindTable = () => {
             </tr>
             {/* Row 3 */}
             <tr>
-              <td className="px-4 py-2 w-1/2">Row 3 Observation</td>
+              <td className="px-4 py-2 w-1/2">Shift 3 Observation</td>
               <td className="px-4 py-2 w-1/2">
                 <textarea
                   className="w-full border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-300"

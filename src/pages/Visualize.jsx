@@ -14,7 +14,6 @@ import {
 
 import {MACHINE_DATA} from '../data'
 import {extractMachines, filterHealthByMachineRange, RANGE, filterByName} from '../utils/pageFilter'
-import TanStackTable from '../components/TanStackTable';
 import ObservationScreen from '../components/ObservationScreen';
 import TailwindTable from '../components/TailwindTable';
 // Register chart components
@@ -60,52 +59,60 @@ const Visualizer = () => {
 const options = {
   responsive: true,
   plugins: {
-      legend: {
-          position: 'top',
-          labels: {
-              generateLabels: (chart) => [
-                  {
-                      text: 'Normal',
-                      fillStyle: '#A3D9A5',
-                      strokeStyle: '#85C987',
-                      hidden: false,
-                      lineWidth: 1,
-                  },
-                  {
-                      text: 'Marginal',
-                      fillStyle: '#FFE9A3',
-                      strokeStyle: '#FFD76B',
-                      hidden: false,
-                      lineWidth: 1,
-                  },
-                  {
-                      text: 'Critical',
-                      fillStyle: '#FFB3B3',
-                      strokeStyle: '#FF9B9B',
-                      hidden: false,
-                      lineWidth: 1,
-                  },
-              ],
+    legend: {
+      position: 'top',
+      labels: {
+        generateLabels: (chart) => [
+          {
+            text: 'Normal',
+            fillStyle: '#A3D9A5',
+            strokeStyle: '#85C987',
+            hidden: false,
+            lineWidth: 1,
           },
+          {
+            text: 'Marginal',
+            fillStyle: '#FFE9A3',
+            strokeStyle: '#FFD76B',
+            hidden: false,
+            lineWidth: 1,
+          },
+          {
+            text: 'Critical',
+            fillStyle: '#FFB3B3',
+            strokeStyle: '#FF9B9B',
+            hidden: false,
+            lineWidth: 1,
+          },
+        ],
       },
+    },
   },
   scales: {
-      x: {
-          title: {
-              display: true,
-              text: 'Date',
-          },
+    x: {
+      title: {
+        display: true,
+        text: 'Date',
       },
-      y: {
-          ticks: {
-              display: false, // Hide Y-axis values
-          },
-          grid: {
-              drawTicks: false, // Optional: Hide tick marks on the Y-axis
-          },
+    },
+    y: {
+      ticks: {
+        display: false, // Hide Y-axis values
       },
+      grid: {
+        drawTicks: false, // Optional: Hide tick marks on the Y-axis
+      },
+    },
+  },
+  onClick: (event, elements, chart) => {
+    if (elements.length > 0) {
+      // Get the index of the clicked bar
+      const barIndex = elements[0].index;
+      setSummary(summaries[barIndex])
+    }
   },
 };
+
 
   
 
@@ -165,11 +172,11 @@ const options = {
               </div>
           </div>
         </div>
-        <div>
+        {/* <div>
           {summary && <ObservationScreen observation={summary['observation']} analysis={summary['analysis']} remark={summary['remarks']}/>}
-        </div>
+        </div> */}
         <div>
-          <TailwindTable />
+          <TailwindTable observation={summary && summary.observation} analysis={summary && summary.analysis}/>
         </div>
       </div>
   );
