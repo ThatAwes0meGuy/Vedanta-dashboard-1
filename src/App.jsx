@@ -11,9 +11,9 @@ const App = () => {
     <>
       <NavBar />
       <Routes>
-        <Route path="/" element={<Home />} />
         <Route path="/table" element={<TanStackTable tableData={MACHINE_DATA}/>} />
         <Route path="/visualize" element={<Visualize />} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </>
   );

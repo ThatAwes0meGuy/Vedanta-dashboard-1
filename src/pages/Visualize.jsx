@@ -14,6 +14,7 @@ import {
 import {MACHINE_DATA} from '../data'
 import {extractMachines, filterHealthByMachineRange, RANGE, filterByName} from '../utils/pageFilter'
 import TanStackTable from '../components/TanStackTable';
+import ObservationScreen from '../components/ObservationScreen';
 // Register the components
 ChartJS.register(
     CategoryScale,
@@ -29,6 +30,7 @@ const Visualizer = () => {
    // State for dropdowns
    const [machineDropdownValue, setMachineDropdownValue] = useState('');
    const [dropdown2Value, setDropdown2Value] = useState('Option A');
+   const [summary, setSummary] = useState('');
    const machines = extractMachines(MACHINE_DATA);
    const {datesList, healthList, summaries} = filterHealthByMachineRange(MACHINE_DATA, machineDropdownValue, RANGE.DAILY);
    const data = {
@@ -122,21 +124,24 @@ const Visualizer = () => {
           {/* Chart and Image Section */}
           <div className="flex flex-wrap">
               {/* Chart Section */}
-              <div className="w-full md:w-2/3 p-4">
+              <div className="w-2/3 p-4">
                   <h2 className="text-xl font-bold mb-4">Health Dashboard</h2>
                   <div className="bg-white p-6 rounded-lg shadow">
                       <Line data={data} options={options} />
                   </div>
               </div>
               {/* Image Section */}
-              <div className="w-full md:w-1/3 p-4 flex items-center justify-center">
+              <div className="w-1/3 p-4 flex items-center justify-center">
                   <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4WIJCZF-MN861ZkI8FuKmN7Xs48XM7_XitQ&s"
+                      src="https://h2ocooling.com/wp-content/uploads/2021/11/Dynafab_FanStacks.jpg"
                       alt="Placeholder"
                       className="rounded-lg shadow"
                   />
               </div>
           </div>
+        </div>
+        <div>
+          {summary && <ObservationScreen observation={summary['observation']} analysis={summary['analysis']} remark={summary['remarks']}/>}
         </div>
         <div>
           <TanStackTable tableData={MACHINE_DATA.filter((machine) => machine.Main_WorkCtr === machineDropdownValue)} />

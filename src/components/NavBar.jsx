@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 
 const NavBar = () => {
   const links = [
-    { label: 'Home', url: '/home' },
+    { label: 'Home', url: '/' },
     { label: 'Table', url: '/table' },
     { label: 'Visualize', url: '/visualize' },
   ];
