@@ -12,7 +12,7 @@ const Home = () => {
 
       <div class="relative flex flex-col items-center p-4 sm:max-w-xl">
         <p class="mb-4 text-center text-lg text-indigo-200 sm:text-xl md:mb-8">Very proud to introduce</p>
-        <h1 class="mb-8 text-center text-4xl font-bold text-white sm:text-5xl md:mb-12 md:text-6xl">Health Dashboard</h1>
+        <h1 class="mb-8 text-center text-4xl font-bold text-white sm:text-5xl md:mb-12 md:text-6xl">Machine Health Dashboard</h1>
 
         <div class="flex w-full flex-col gap-2.5 sm:flex-row sm:justify-center">
           <Link to="/table" class="inline-block rounded-lg bg-indigo-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base">Start now</Link>

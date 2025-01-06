@@ -7,9 +7,9 @@ export const RANGE = {
 }
 
 export const HEALTH_STATUS = {
-    NORMAL: 0,
-    MARGINAL: 1,
-    CRITICAL: 2
+    NORMAL: 250,
+    MARGINAL: 500,
+    CRITICAL: 750
 }
 export const machineFilter = ({data, filterString}) => {
     return data;

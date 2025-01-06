@@ -16,13 +16,13 @@ const NavBar = () => {
             aria-label="logo"
           >
             <img
-              src="https://companieslogo.com/img/orig/VEDL.NS-07320005.png?t=1729310637"
+              src="https://d1rbiogke1jwo5.cloudfront.net/wp-content/uploads/2021/12/Vedanta-Logo-PNG.png"
               alt="Vedanta Logo"
               width="95"
               height="94"
-              class="h-auto w-6"
+              class="h-auto w-80"
             />
-            <span class="ml-2 text-green-500">Vedanta</span>
+            {/* <span class="ml-2 text-green-500">Vedanta</span> */}
           </a>
 
           <nav class="hidden gap-12 lg:flex">

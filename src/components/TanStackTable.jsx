@@ -24,9 +24,9 @@ const TanStackTable = ({tableData}) => {
     columnHelper.accessor('Equipment', {
       cell: (info) => (
         <img
-          src="https://www.shutterstock.com/image-vector/industrial-hvac-blower-equipment-exhaust-600nw-2443989807.jpg"
+          src="https://4.imimg.com/data4/IP/KE/MY-418529/electric-motar.jpg"
           alt="..."
-          className="rounded-full w-10 h-10 object-cover"
+          className="rounded-full w-14 h-14 object-cover"
         />
       ),
       header: 'Equipment',
