@@ -4,6 +4,7 @@ const NavBar = () => {
   const links = [
     { label: 'Home', url: '/home' },
     { label: 'Table', url: '/table' },
+    { label: 'Visualize', url: '/visualize' },
   ];
   return (
     <div class="bg-white lg:pb-12">
