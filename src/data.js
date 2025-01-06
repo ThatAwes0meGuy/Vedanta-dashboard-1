@@ -16,7 +16,7 @@
 //   count: 30,
 // });
 
-export const USERS = [
+export const MACHINE_DATA = [
   {
     Sl_No: 1,
     Date_of_Visit: '2024-11-01 ',

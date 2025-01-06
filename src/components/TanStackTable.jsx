@@ -6,14 +6,13 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { USERS } from '../data';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DownloadBtn from './DownloadBtn';
 import UploadBtn from './UploadBtn';
 import DebouncedInput from './DebouncedInput';
 import { SearchIcon } from '../Icons/Icons';
 
-const TanStackTable = () => {
+const TanStackTable = ({tableData}) => {
   const columnHelper = createColumnHelper();
 
   const columns = [
@@ -73,7 +72,10 @@ const TanStackTable = () => {
       header: 'Remarks',
     }),
   ];
-  const [data] = useState(() => [...USERS]);
+  const [data, setData] = useState(() => [...tableData]);
+  useEffect(() => {
+    setData(() => [...tableData])
+  }, [tableData])
   const [globalFilter, setGlobalFilter] = useState('');
 
   const table = useReactTable({

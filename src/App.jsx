@@ -5,14 +5,14 @@ import Visualize from './pages/Visualize';
 
 import TanStackTable from './components/TanStackTable';
 import NavBar from './components/NavBar';
-
+import { MACHINE_DATA } from './data';
 const App = () => {
   return (
     <>
       <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/table" element={<TanStackTable />} />
+        <Route path="/table" element={<TanStackTable tableData={MACHINE_DATA}/>} />
         <Route path="/visualize" element={<Visualize />} />
       </Routes>
     </>
