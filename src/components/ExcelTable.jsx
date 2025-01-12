@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Spreadsheet from "react-spreadsheet";
-import CustomCell from './CustomCell'
 import './CustomStyles.css'; // Import your custom styles
 import {
     collection,
@@ -11,36 +10,55 @@ import {
     doc,
   } from 'firebase/firestore';
   import { db } from '../firebase'; // Import your Firebase configuration
-import { use } from "react";
   
 //  https://iddan.github.io/react-spreadsheet/docs/usage
 
   
 const ExcelTable = () => {
-  const [data, setData] = useState([
-    [{ value: "Vanilla" }, { value: "Chocolate" }, { value: "Chocolate" }],
-  ]);
-  useEffect(async () => {
-    try {
-        const querySnapshot = await getDocs(collection(db, 'health_status'));
-        const users = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        console.log('Users: ', users);
-      } catch (error) {
-        console.error('Error fetching documents: ', error);
+  const [data, setData] = useState();
+  const [shouldSave, setShouldSave] = useState(true);
+  useEffect(() => {
+    async function fetchData() {
+        try {
+            const querySnapshot = await getDocs(collection(db, "health_status"));
+            querySnapshot.forEach((doc) => {
+                console.log(doc.id, " => ", JSON.parse(doc.data().items).data);
+                setData(JSON.parse(doc.data().items).data)
+            });
+            const users = querySnapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+          } catch (error) {
+            console.error('Error fetching documents: ', error);
+          }
       }
+      fetchData();
   }, [])
   const columnLabels = ["Observations", "Expert Analysis", "Issue Resolved"];
   const saveHandler = async () => {
     // TODO: PUSH DATA TO FIREBASE
     try {
-        const docRef = await addDoc(collection(db, 'health_status'), data);
+        const collectionRef = collection(db, "health_status");
+
+        // Fetch all existing documents
+        const querySnapshot = await getDocs(collectionRef);
+
+        // Delete each document
+        const deletePromises = querySnapshot.docs.map((document) =>
+            deleteDoc(doc(db, "health_status", document.id))
+        );
+        await Promise.all(deletePromises);
+
+        console.log("All documents deleted successfully!");
+        const docRef = await addDoc(collection(db, 'health_status'), {
+            items: JSON.stringify({data})
+        });
         console.log('Document written with ID: ', docRef.id);
       } catch (error) {
         console.error('Error adding document: ', error);
       }
+      setShouldSave(false);
   }
   const addRowHandler = () => {
     setData((prevData) => [...prevData, [{ value: "" }, { value: "" }, { value: "" }]]);
@@ -58,7 +76,7 @@ const ExcelTable = () => {
           className="bg-green-500 text-white font-medium mr-6 px-4 py-2 rounded-lg shadow hover:bg-green-600 transition duration-200"
           onClick={saveHandler}
         >
-          Save
+          Save {shouldSave ? '(Unsaved)': ''}
         </button>
         <button
           className="bg-blue-500 text-white font-medium px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition duration-200 mr-6"
@@ -73,7 +91,7 @@ const ExcelTable = () => {
         </button>
        
       </div>
-      <Spreadsheet data={data} columnLabels={columnLabels} onChange={setData} className="w-full"/>
+      <Spreadsheet data={data || [[]]} columnLabels={columnLabels} onChange={setData} className="w-full"/>
       {/* <button
         style={{
           marginTop: "10px",
