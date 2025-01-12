@@ -1,6 +1,8 @@
 import { Link } from 'react-router';
+import { useAuth0 } from "@auth0/auth0-react";
 
 const NavBar = () => {
+  const { loginWithRedirect } = useAuth0();
   const links = [
     { label: 'Home', url: '/' },
     { label: 'Table', url: '/table' },
@@ -39,9 +41,10 @@ const NavBar = () => {
           <div class="-ml-8 hidden flex-col gap-2.5 sm:flex-row sm:justify-center lg:flex lg:justify-start">
             <a
               href="#"
+              onClick={() => loginWithRedirect()}
               class="inline-block rounded-lg px-4 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:text-indigo-500 focus-visible:ring active:text-indigo-600 md:text-base"
             >
-              Sign in
+              Login
             </a>
 
             <a

@@ -16,6 +16,7 @@ import {MACHINE_DATA} from '../data'
 import {extractMachines, filterHealthByMachineRange, RANGE, filterByName} from '../utils/pageFilter'
 import ObservationScreen from '../components/ObservationScreen';
 import TailwindTable from '../components/TailwindTable';
+import ExcelTable from '../components/ExcelTable';
 // Register chart components
 ChartJS.register(
   CategoryScale,
@@ -175,8 +176,11 @@ const options = {
         {/* <div>
           {summary && <ObservationScreen observation={summary['observation']} analysis={summary['analysis']} remark={summary['remarks']}/>}
         </div> */}
-        <div>
+        {/* <div>
           <TailwindTable observation={summary && summary.observation} analysis={summary && summary.analysis}/>
+        </div> */}
+        <div>
+          <ExcelTable />
         </div>
       </div>
   );

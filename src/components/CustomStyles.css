@@ -1,0 +1,31 @@
+/* Target the root Spreadsheet component */
+.Spreadsheet {
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    max-width: 100vw;
+  }
+  
+  /* Target spreadsheet cells */
+  .Spreadsheet .Spreadsheet__cell {
+   width: 33%;
+   max-width: 33vw;
+   word-wrap: break-word; /* Wrap long text to fit in the cell */
+   overflow-wrap: anywhere; /* Ensure proper text wrapping */
+   padding: 28px 0;
+   font-size: 18px;
+   text-align: center;
+  }
+  
+  /* Change the header row style */
+  .Spreadsheet .Spreadsheet__cell--header {
+    background-color: blue;
+    color: white;
+    font-weight: bold;
+  }
+  
+  /* Style for selected cells */
+  .Spreadsheet .Spreadsheet__cell--selected {
+    background-color: #d3f9d8;
+    outline: 2px solid #4caf50;
+  }
+  
