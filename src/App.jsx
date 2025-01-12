@@ -8,17 +8,25 @@ import NavBar from './components/NavBar';
 import { MACHINE_DATA } from './data';
 
 import { useAuth0 } from "@auth0/auth0-react";
+import Login from './pages/LoginPage';
+import SignUp from './components/Signup';
+import ProtectedRoute from "./hooks/ProtectedRoute";
+import { AuthProvider } from './hooks/AuthContext';
 
 const App = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   return (
     <>
+    <AuthProvider>
       <NavBar />
       <Routes>
-        {true && <Route path="/table" element={<TanStackTable tableData={MACHINE_DATA}/>} />}
-        {true && <Route path="/visualize" element={<Visualize />} />}
+        {<Route path="/table" element={<ProtectedRoute><TanStackTable tableData={MACHINE_DATA}/></ProtectedRoute>} />}
+        {<Route path="/visualize" element={<ProtectedRoute><Visualize /></ProtectedRoute>} />}
+        <Route path="/login" element={<Login />} />
+        <Route path="/sign-up" element={<SignUp />} />
         <Route path="/" element={<Home />} />
       </Routes>
+      </AuthProvider>
     </>
   );
 };

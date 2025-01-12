@@ -1,13 +1,24 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useAuth0 } from "@auth0/auth0-react";
+import GoogleLogin from './GoogleLogin';
+import { useAuth } from "../hooks/AuthContext";
+
 
 const NavBar = () => {
-  const { loginWithRedirect } = useAuth0();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
   const links = [
     { label: 'Home', url: '/' },
-    
+    { label: 'Table', url: '/table' },
     { label: 'Visualize', url: '/visualize' },
   ];
+  const handleLogout = async () => {
+    await logout();
+    localStorage.clear()
+    alert("You have been logged out!");
+    navigate('/')
+  };
   return (
     <div className="bg-white lg:pb-12">
       <div className="mx-auto max-w-screen-2xl px-4 md:px-8">
@@ -38,23 +49,32 @@ const NavBar = () => {
               </Link>
              </span>
             ))}
+            {/* <GoogleLogin /> */}
           </nav>
 
           <div className="-ml-8 hidden flex-col gap-2.5 sm:flex-row sm:justify-center lg:flex lg:justify-start">
-            <a
-              href="#"
-              onClick={() => loginWithRedirect()}
+          {!localStorage.getItem('auth') &&<Link
+              to={'/login'}
               className="inline-block rounded-lg px-4 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:text-indigo-500 focus-visible:ring active:text-indigo-600 md:text-base"
             >
               Login
-            </a>
+            </Link>}
+            
 
-            <a
-              href="#"
+              {localStorage.getItem('auth') && <a  
+              onClick={handleLogout} 
+              className="inline-block rounded-lg px-4 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:text-indigo-500 focus-visible:ring active:text-indigo-600 md:text-base"
+            >
+              Logout
+            </a>}
+            
+
+            <Link
+              to="sign-up"
               className="inline-block rounded-lg bg-indigo-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base"
             >
               Sign up
-            </a>
+            </Link>
           </div>
 
           <button

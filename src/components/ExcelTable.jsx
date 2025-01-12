@@ -12,8 +12,6 @@ import {
   import { db } from '../firebase'; // Import your Firebase configuration
   
 //  https://iddan.github.io/react-spreadsheet/docs/usage
-
-  
 const ExcelTable = () => {
   const [data, setData] = useState();
   const [shouldSave, setShouldSave] = useState(true);
