@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { Link, useNavigate } from "react-router";
+import { ADMINS } from "../utils/admins";
 
 const Login = () => {
   const navigate = useNavigate()
@@ -15,6 +16,7 @@ const Login = () => {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      if(ADMINS.includes(email)) localStorage.setItem('role', 'ADMIN')
       localStorage.setItem('auth', email);
       alert("Login successful!");
       navigate('/')

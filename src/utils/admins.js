@@ -1,5 +1,4 @@
-export const admins = [
+export const ADMINS = [
     'avsashisha8@gmail.com',
-    'avsashish9@gmail.com',
     'sree@acmeirm.com'
 ]

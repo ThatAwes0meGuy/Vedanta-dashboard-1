@@ -71,10 +71,18 @@ const NavBar = () => {
 
             <Link
               to="sign-up"
-              className="inline-block rounded-lg bg-indigo-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base"
+              className="inline-block rounded-lg bg-indigo-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base mr-4"
             >
               Sign up
             </Link>
+           {
+            localStorage.getItem('role') === 'ADMIN' &&  <a
+            to="#"
+            className="inline-block rounded-lg bg-amber-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-amber-300 transition duration-100 hover:bg-amber-600 focus-visible:ring active:bg-amber-700 md:text-base"
+          >
+            Admin
+          </a>
+           }
           </div>
 
           <button

@@ -19,9 +19,16 @@ const ExcelTable = () => {
     async function fetchData() {
         try {
             const querySnapshot = await getDocs(collection(db, "health_status"));
+            const isAdmin = localStorage.getItem('role') === 'ADMIN'
             querySnapshot.forEach((doc) => {
                 console.log(doc.id, " => ", JSON.parse(doc.data().items).data);
-                setData(JSON.parse(doc.data().items).data)
+                setData(() => 
+                   JSON.parse(doc.data().items).data.map(row => 
+                     row.map(col => {
+                      return {...col, readOnly: !isAdmin}
+                     })
+                  )
+                )
             });
             const users = querySnapshot.docs.map((doc) => ({
               id: doc.id,
