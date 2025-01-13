@@ -1,13 +1,15 @@
 import Spreadsheet from "react-spreadsheet";
 
 const FullTable = ({columnLabels, tableData}) => {
+    const isAdmin = localStorage.getItem('role') === 'ADMIN'
     const handleAddRow = () => {}
     const handleRemoveRow = () => {}
     return<div className="p-4 bg-gray-100 rounded-lg shadow-md">
     {/* Header with buttons */}
     <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-gray-700">Health Check table</h2>
-        <div className="space-x-2">
+        {
+            isAdmin && <div className="space-x-2">
             <button 
                 onClick={handleAddRow} 
                 className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
@@ -25,6 +27,7 @@ const FullTable = ({columnLabels, tableData}) => {
                 Save
             </button>
         </div>
+        }
     </div>
 
     {/* Table */}

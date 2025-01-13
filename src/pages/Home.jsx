@@ -90,12 +90,12 @@ const Home = () => {
                 >
                   Start now
                 </Link>
-                <Link
-                  to="/visualize"
+                <a
+                  href="#insights"
                   className="inline-block rounded-lg bg-gray-200 px-8 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base"
                 >
                   Check Health
-                </Link>
+                </a>
               </div>
             </div>
           </section>
@@ -103,7 +103,7 @@ const Home = () => {
       </div>
 
       {/* Charts Section */}
-      <div className="bg-gray-50 py-12">
+      <div className="bg-gray-50 py-12" id="insights">
         <div className="mx-auto max-w-screen-2xl px-4 md:px-8">
           <h2 className="mb-8 text-center text-3xl font-bold text-gray-800">
             Dashboard Insights

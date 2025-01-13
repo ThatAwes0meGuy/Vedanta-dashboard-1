@@ -15,11 +15,12 @@ import {
 const ExcelTable = () => {
   const [data, setData] = useState();
   const [shouldSave, setShouldSave] = useState(true);
+  const isAdmin = localStorage.getItem('role') === 'ADMIN'
   useEffect(() => {
     async function fetchData() {
         try {
             const querySnapshot = await getDocs(collection(db, "health_status"));
-            const isAdmin = localStorage.getItem('role') === 'ADMIN'
+            
             querySnapshot.forEach((doc) => {
                 console.log(doc.id, " => ", JSON.parse(doc.data().items).data);
                 setData(() => 
@@ -77,23 +78,25 @@ const ExcelTable = () => {
         {/* Header Section */}
       <div className="flex space-between center w-full max-w-8xl px-12 mb-4">
       <h1 className="text-2xl font-bold mr-auto">Health Observation</h1>
+      {
+        isAdmin && <><button
+        className="bg-green-500 text-white font-medium mr-6 px-4 py-2 rounded-lg shadow hover:bg-green-600 transition duration-200"
+        onClick={saveHandler}
+      >
+        Save {shouldSave ? '(Unsaved)': ''}
+      </button>
       <button
-          className="bg-green-500 text-white font-medium mr-6 px-4 py-2 rounded-lg shadow hover:bg-green-600 transition duration-200"
-          onClick={saveHandler}
-        >
-          Save {shouldSave ? '(Unsaved)': ''}
-        </button>
-        <button
-          className="bg-blue-500 text-white font-medium px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition duration-200 mr-6"
-         onClick={addRowHandler}>
-          Add row
-        </button>
-        <button
-          className="bg-red-500 text-white font-medium px-4 py-2 rounded-lg shadow hover:bg-red-600 transition duration-200"
-          onClick={deleteRowHandler}
-        >
-          Delete row
-        </button>
+        className="bg-blue-500 text-white font-medium px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition duration-200 mr-6"
+       onClick={addRowHandler}>
+        Add row
+      </button>
+      <button
+        className="bg-red-500 text-white font-medium px-4 py-2 rounded-lg shadow hover:bg-red-600 transition duration-200"
+        onClick={deleteRowHandler}
+      >
+        Delete row
+      </button></>
+      }
        
       </div>
       <Spreadsheet data={data || [[]]} columnLabels={columnLabels} onChange={setData} className="w-full"/>
