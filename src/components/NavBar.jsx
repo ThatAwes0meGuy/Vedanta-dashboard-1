@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router';
-import { useAuth0 } from "@auth0/auth0-react";
+
 import { useAuth } from "../hooks/AuthContext";
 
 
@@ -9,7 +9,9 @@ const NavBar = () => {
 
   const links = [
     { label: 'Home', url: '/' },
-    { label: 'Table', url: '/table' },
+    { label: 'Health Check', url: '/table1' },
+    { label: 'Table 2', url: '/table2' },
+    { label: 'Table 3', url: '/table3' },
     { label: 'Visualize', url: '/visualize' },
   ];
   const handleLogout = async () => {
@@ -19,7 +21,7 @@ const NavBar = () => {
     navigate('/')
   };
   return (
-    <div className="bg-white lg:pb-12">
+    <div className="bg-white">
       <div className="mx-auto max-w-screen-2xl px-4 md:px-8">
         <header className="flex items-center justify-between py-4 md:py-8">
           <a
@@ -32,14 +34,14 @@ const NavBar = () => {
               alt="Vedanta Logo"
               width="95"
               height="94"
-              className="h-auto w-80"
+              className="h-auto w-72"
             />
             {/* <span className="ml-2 text-green-500">Vedanta</span> */}
           </a>
 
           <nav className="hidden gap-12 lg:flex">
             {links.map(({ label, url }) => (
-             <span key={url}>
+             localStorage.getItem('auth') && <span key={url}>
                <Link
                 to={url}
                 className="text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 active:text-indigo-700"
@@ -48,40 +50,58 @@ const NavBar = () => {
               </Link>
              </span>
             ))}
-            {/* <GoogleLogin /> */}
           </nav>
 
           <div className="-ml-8 hidden flex-col gap-2.5 sm:flex-row sm:justify-center lg:flex lg:justify-start">
-          {!localStorage.getItem('auth') &&<Link
+           <span
+  className="inline-flex flex-col items-center gap-2 rounded-lg px-4 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:text-indigo-500 focus-visible:ring active:text-indigo-600 md:text-base"
+>
+  {
+    localStorage.getItem('role') === 'ADMIN' && <span className="inline-flex items-center rounded-md bg-yellow-50 text-center px-2 py-1 text-xs font-medium outline-none text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
+    Admin
+  </span>
+  }
+  {localStorage.getItem('auth') && (
+    <span
+      onClick={handleLogout}
+      class="cursor-pointer inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10"
+
+    >
+      Logout
+    </span>
+  )}
+</span>
+
+
+              {
+                !localStorage.getItem('auth')  &&  <Link
+                to="sign-up"
+                className="inline-block rounded-lg py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base mr-4"
+              >
+                Sign up
+              </Link>
+              }
+              {!localStorage.getItem('auth') &&<Link
               to={'/login'}
               className="inline-block rounded-lg px-4 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:text-indigo-500 focus-visible:ring active:text-indigo-600 md:text-base"
             >
               Login
             </Link>}
-            
-
-              {localStorage.getItem('auth') && <a  
-              onClick={handleLogout} 
-              className="inline-block rounded-lg px-4 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:text-indigo-500 focus-visible:ring active:text-indigo-600 md:text-base"
-            >
-              Logout
-            </a>}
-            
-
-            <Link
-              to="sign-up"
-              className="inline-block rounded-lg bg-indigo-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base mr-4"
-            >
-              Sign up
-            </Link>
-           {
-            localStorage.getItem('role') === 'ADMIN' &&  <a
-            to="#"
-            className="inline-block rounded-lg bg-amber-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-amber-300 transition duration-100 hover:bg-amber-600 focus-visible:ring active:bg-amber-700 md:text-base"
+           <a
+            href="/"
+            className="inline-flex items-center gap-2.5 text-2xl font-bold text-black md:text-3xl"
+            aria-label="logo"
           >
-            Admin
+            <img
+              src="https://mvsips.com/wp-content/uploads/2023/10/Logo.png"
+              alt="Vedanta Logo"
+              width="24"
+              height="12"
+              className="h-auto w-44"
+            />
+            {/* <span className="ml-2 text-green-500">Vedanta</span> */}
           </a>
-           }
+           
           </div>
 
           <button
