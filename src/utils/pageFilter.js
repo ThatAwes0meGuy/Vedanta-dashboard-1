@@ -43,15 +43,10 @@ export const filterHealthByMachineRange = (data, machineName, range=RANGE.DAILY)
    }
     return {datesList, healthList,summaries}
 }
-// const data = {
-//     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-//     datasets: [
-//         {
-//             label: 'Dataset 1',
-//             data: [65, 59, 80, 81, 56, 55, 40],
-//             borderColor: 'rgba(75, 192, 192, 1)',
-//             backgroundColor: 'rgba(75, 192, 192, 0.2)',
-//             tension: 0.4,
-//         },
-//     ],
-// };
+
+// Gets cumulative health status
+export const getHealthCumulative = (data) => {
+    const health = {CRITICAL: 0, NORMAL: 0, MARGINAL: 0} 
+    data.forEach(row => health[row['Health_Status']]++);
+    return health
+}

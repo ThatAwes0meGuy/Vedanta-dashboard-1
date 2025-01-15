@@ -130,22 +130,6 @@ const options = {
                     {machines?.map((machine) => <option value={machine}>{machine}</option>)}
                   </select>
               </div>
-
-              {/* Dropdown 2 */}
-              <div className="flex items-center space-x-2">
-                  <label htmlFor="dropdown2" className="text-gray-700 font-medium">
-                      Duration:
-                  </label>
-                  <select
-                      id="dropdown2"
-                      value={dropdown2Value}
-                      onChange={(e) => setDropdown2Value(e.target.value)}
-                      className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  >
-                      <option value="Monthly">Monthly</option>
-                      <option value="Daily">Daily</option>
-                  </select>
-              </div>
           </div>
 
           {/* Chart and Image Section */}

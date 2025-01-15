@@ -127,7 +127,7 @@ const App = () => {
           <Route path="/visualize" element={<ProtectedRoute><Visualize machineData={machineData} /></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home machineData={machineData}/>} />
         </Routes>
       </AuthProvider>
     </MyContext.Provider>

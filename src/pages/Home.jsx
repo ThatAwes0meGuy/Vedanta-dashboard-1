@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link } from "react-router";
 import { Pie, Bar, Line } from "react-chartjs-2";
 import {
@@ -13,6 +13,7 @@ import {
   Title,
   PointElement,
 } from "chart.js";
+import { getHealthCumulative } from "../utils/pageFilter";
 
 ChartJS.register(
   ArcElement,
@@ -26,13 +27,15 @@ ChartJS.register(
   PointElement
 );
 
-const Home = () => {
+const Home = ({machineData}) => {
+  const health = getHealthCumulative(machineData)
+  console.log('health', health)
   // Dummy data for charts
   const pieData = {
-    labels: ["Healthy", "Warning", "Critical"],
+    labels: ["NORMAL", "MARGINAL", "CRITICAL"],
     datasets: [
       {
-        data: [65, 20, 15],
+        data: [health.NORMAL, health.MARGINAL, health.CRITICAL],
         backgroundColor: ["#4CAF50", "#FFC107", "#F44336"],
         hoverBackgroundColor: ["#66BB6A", "#FFD54F", "#EF5350"],
       },
@@ -40,7 +43,7 @@ const Home = () => {
   };
 
   const barData = {
-    labels: ["Machine A", "Machine B", "Machine C", "Machine D"],
+    labels: ["ALH_MECH", "PDS_MECH", "NPA_MECH", "PPT_MECH"],
     datasets: [
       {
         label: "Performance %",
