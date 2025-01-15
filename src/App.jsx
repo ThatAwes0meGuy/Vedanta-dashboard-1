@@ -70,9 +70,6 @@ const App = () => {
               ? Object.entries(doc.data()?.data)
               : [];
             sortedArr.sort((a, b) => {
-              console.log(
-                `Comparing: ${a[0]} (${columnLabels.indexOf(a[0])}) and ${b[0]} (${columnLabels.indexOf(b[0])})`
-              );
               return columnLabels.indexOf(a[0]) - columnLabels.indexOf(b[0]);
             });
             return [

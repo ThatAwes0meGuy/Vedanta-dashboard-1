@@ -2,9 +2,7 @@ import Spreadsheet from "react-spreadsheet";
 
 const FullTable = ({columnLabels, tableData}) => {
     const isAdmin = localStorage.getItem('role') === 'ADMIN'
-    console.log('tableData', tableData)
     const handleAddRow = () => {}
-    const handleRemoveRow = () => {}
     return<div className="p-4 bg-gray-100 rounded-lg shadow-md">
     {/* Header with buttons */}
     <div className="flex justify-between items-center mb-4">
@@ -37,6 +35,9 @@ const FullTable = ({columnLabels, tableData}) => {
             <Spreadsheet 
                 columnLabels={columnLabels} 
                 data={tableData} 
+                onChange={d => {
+                    console.log('date', d)
+                }}
             />
         ) : (
             <p className="text-gray-500">No data available</p>

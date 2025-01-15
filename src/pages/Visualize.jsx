@@ -25,7 +25,6 @@ ChartJS.register(
 );
 
 const Visualizer = ({machineData}) => {
-  console.log('machineData', machineData)
    // State for dropdowns
    const [machineDropdownValue, setMachineDropdownValue] = useState('ALH_MECH');
    const [dropdown2Value, setDropdown2Value] = useState('Daily');

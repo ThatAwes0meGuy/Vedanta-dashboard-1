@@ -134,7 +134,7 @@ const Home = () => {
             {/* Line Chart */}
             <div className="rounded-lg bg-white p-6 shadow-md">
               <h3 className="mb-4 text-lg font-semibold text-gray-700">
-                Temperature Trends
+                Temperature Trends ALH_MECH
               </h3>
               <Line
                 data={lineData}
