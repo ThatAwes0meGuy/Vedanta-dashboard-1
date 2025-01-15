@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -10,9 +10,6 @@ import {
   Legend,
 } from 'chart.js';
 
-
-
-import {MACHINE_DATA} from '../data'
 import {extractMachines, filterHealthByMachineRange, RANGE, filterByName} from '../utils/pageFilter'
 import ObservationScreen from '../components/ObservationScreen';
 import TailwindTable from '../components/TailwindTable';
@@ -27,32 +24,33 @@ ChartJS.register(
   Legend
 );
 
-const Visualizer = () => {
+const Visualizer = ({machineData}) => {
+  console.log('machineData', machineData)
    // State for dropdowns
    const [machineDropdownValue, setMachineDropdownValue] = useState('ALH_MECH');
    const [dropdown2Value, setDropdown2Value] = useState('Daily');
-   const [summary, setSummary] = useState('');
-   const machines = extractMachines(MACHINE_DATA);
-   const {datesList, healthList, summaries} = filterHealthByMachineRange(MACHINE_DATA, machineDropdownValue, RANGE.DAILY);
+   const [summary, setSummary] = useState({observation: '', analysis: ''});
+   const machines = extractMachines(machineData);
+   const {datesList, healthList, summaries} = filterHealthByMachineRange(machineData, machineDropdownValue, RANGE.DAILY);
    const data = {
-    labels: datesList, // e.g., ['2024-01-01', '2024-01-02', ...]
+    labels: datesList, 
     datasets: [
         {
             label: 'Health Status',
-            data: healthList, // e.g., [10, 20, 30, 40, 50]
+            data: healthList, 
             backgroundColor: healthList.map((value) => {
-              if (value === 250) return '#A3D9A5'; // Light Green
-              if (value === 500) return '#FFE9A3'; // Light Yellow
-              if (value === 750) return '#FFB3B3'; // Light Coral/Salmon
-              return '#D3D3D3'; // Default Light Gray
+              if (value === 250) return '#A3D9A5'; 
+              if (value === 500) return '#FFE9A3'; 
+              if (value === 750) return '#FFB3B3'; 
+              return '#D3D3D3'; 
           }),
           borderColor: healthList.map((value) => {
-              if (value === 250) return '#85C987'; // Slightly darker Light Green
-              if (value === 500) return '#FFD76B'; // Slightly darker Light Yellow
-              if (value === 750) return '#FF9B9B'; // Slightly darker Light Coral
-              return '#B0B0B0'; // Default darker Light Gray
+              if (value === 250) return '#85C987'; 
+              if (value === 500) return '#FFD76B'; 
+              if (value === 750) return '#FF9B9B'; 
+              return '#B0B0B0'; 
           }),
-            borderWidth: 1, // Thickness of the bar border
+            borderWidth: 1, 
         },
     ],
 };
@@ -114,9 +112,6 @@ const options = {
   },
 };
 
-
-  
-
     return (
       <div className='flex flex-col'>
         <div className="flex flex-col p-8 bg-gray-100">
@@ -140,7 +135,7 @@ const options = {
               {/* Dropdown 2 */}
               <div className="flex items-center space-x-2">
                   <label htmlFor="dropdown2" className="text-gray-700 font-medium">
-                      Frequency:
+                      Duration:
                   </label>
                   <select
                       id="dropdown2"
@@ -173,14 +168,8 @@ const options = {
               </div>
           </div>
         </div>
-        {/* <div>
-          {summary && <ObservationScreen observation={summary['observation']} analysis={summary['analysis']} remark={summary['remarks']}/>}
-        </div> */}
-        {/* <div>
-          <TailwindTable observation={summary && summary.observation} analysis={summary && summary.analysis}/>
-        </div> */}
         <div>
-          <ExcelTable />
+        <TailwindTable observation={summary?.observation} analysis={summary?.analysis}/>
         </div>
       </div>
   );

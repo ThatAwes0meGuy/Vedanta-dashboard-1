@@ -11,7 +11,6 @@ import {
   } from 'firebase/firestore';
   import { db } from '../firebase'; // Import your Firebase configuration
   
-//  https://iddan.github.io/react-spreadsheet/docs/usage
 const ExcelTable = () => {
   const [data, setData] = useState();
   const [shouldSave, setShouldSave] = useState(true);
@@ -43,7 +42,6 @@ const ExcelTable = () => {
   }, [])
   const columnLabels = ["Observations", "Expert Analysis", "Issue Resolved"];
   const saveHandler = async () => {
-    // TODO: PUSH DATA TO FIREBASE
     try {
         const collectionRef = collection(db, "health_status");
 
@@ -100,19 +98,6 @@ const ExcelTable = () => {
        
       </div>
       <Spreadsheet data={data || [[]]} columnLabels={columnLabels} onChange={setData} className="w-full"/>
-      {/* <button
-        style={{
-          marginTop: "10px",
-          backgroundColor: "#3498db",
-          color: "white",
-          padding: "10px 20px",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-        onClick={addRowHandler}
-      >
-        Add Row 
-      </button>*/}
     </div>
   );
 };

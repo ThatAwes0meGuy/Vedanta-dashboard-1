@@ -2,6 +2,7 @@ import Spreadsheet from "react-spreadsheet";
 
 const FullTable = ({columnLabels, tableData}) => {
     const isAdmin = localStorage.getItem('role') === 'ADMIN'
+    console.log('tableData', tableData)
     const handleAddRow = () => {}
     const handleRemoveRow = () => {}
     return<div className="p-4 bg-gray-100 rounded-lg shadow-md">

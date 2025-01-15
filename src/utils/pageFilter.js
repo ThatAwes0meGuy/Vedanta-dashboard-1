@@ -17,6 +17,7 @@ export const machineFilter = ({data, filterString}) => {
 
 // Returns list of machines from the excel data
 export const extractMachines = (data) => {
+    console.log('data', data)
     return uniq(data.map(machine => machine['Main_WorkCtr']))
 }
 
@@ -40,16 +41,6 @@ export const filterHealthByMachineRange = (data, machineName, range=RANGE.DAILY)
         }
     });
    }
-
-    // Monthly range
-    // else{
-    //     data.map((machine) => {
-    //         if(machine.Main_WorkCtr === machineName){
-    //             datesList.push(machine.Date_of_Visit)
-    //             healthList.push(machine.Health_Status)
-    //         }
-    //     });
-    // }
     return {datesList, healthList,summaries}
 }
 // const data = {
