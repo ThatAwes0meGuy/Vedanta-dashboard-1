@@ -1,5 +1,6 @@
 import React, {useState, useContext} from 'react';
 import { Bar } from 'react-chartjs-2';
+import moment from 'moment/moment';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,7 +11,7 @@ import {
   Legend,
 } from 'chart.js';
 
-import {extractMachines, filterHealthByMachineRange, RANGE, filterByName} from '../utils/pageFilter'
+import {extractMachines, filterHealthByMachineRange, RANGE, extractPlants} from '../utils/pageFilter'
 import ObservationScreen from '../components/ObservationScreen';
 import TailwindTable from '../components/TailwindTable';
 import ExcelTable from '../components/ExcelTable';
@@ -27,9 +28,14 @@ ChartJS.register(
 const Visualizer = ({machineData}) => {
    // State for dropdowns
    const [machineDropdownValue, setMachineDropdownValue] = useState('ALH_MECH');
-   const [dropdown2Value, setDropdown2Value] = useState('Daily');
+   const [plantDropdown, setPlantDropdown] = useState('Smelter 1');
    const [summary, setSummary] = useState({observation: '', analysis: ''});
+   const [dateFilters, setDateFilters] = useState({
+    startDate: moment(new Date()).format("DD/MM/YYYY"),
+    endDate: moment(new Date()).format("DD/MM/YYYY")
+   })
    const machines = extractMachines(machineData);
+   const plants = extractPlants();
    const {datesList, healthList, summaries} = filterHealthByMachineRange(machineData, machineDropdownValue, RANGE.DAILY);
    const data = {
     labels: datesList, 
@@ -52,7 +58,9 @@ const Visualizer = ({machineData}) => {
             borderWidth: 1, 
         },
     ],
-};
+  };
+
+  const filterApplyHandler = () => {}
 
 const options = {
   responsive: true,
@@ -119,7 +127,7 @@ const options = {
               {/* Dropdown 1 */}
               <div className="flex items-center space-x-2 mx-12">
                   <label htmlFor="machineDropdownValue" className="text-gray-700 font-medium">
-                      Machine:
+                      Area:
                   </label>
                   <select
                       id="machineDropdownValue"
@@ -129,6 +137,55 @@ const options = {
                   >
                     {machines?.map((machine) => <option value={machine}>{machine}</option>)}
                   </select>
+              </div>
+               {/* Dropdown 2 */}
+               <div className="flex items-center space-x-2 mx-12">
+                  <label htmlFor="plantDropdown" className="text-gray-700 font-medium">
+                      Plant:
+                  </label>
+                  <select
+                      id="plantDropdown"
+                      value={plantDropdown}
+                      onChange={(e) => setPlantDropdown(e.target.value)}
+                      className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  >
+                    {plants?.map((plant) => <option value={plant}>{plant}</option>)}
+                  </select>
+              </div>
+
+               {/* Dropdown start date */}
+               <div className="flex items-center space-x-2 mx-12">
+                  <label htmlFor="start-date" className="text-gray-700 font-medium">
+                      Start Date:
+                  </label>
+                  <input 
+                    type="date"
+                    id="start-date"
+                    name="start-date"
+                    value={"2025-01-01"}
+                    min="2018-01-01"
+                    max="2025-12-31" 
+                    onChange={(e) => setDateFilters(p => ({...p, startDate: e.target.value}))}
+                    className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+              </div>
+               
+               {/* Dropdown end date */}
+               <div className="flex items-center space-x-2 mx-12">
+                  <label htmlFor="end-date" className="text-gray-700 font-medium">
+                      End Date:
+                  </label>
+                  <input 
+                  type="date"
+                  id="end-date" name="end-date" 
+                  value={"2025-01-01"} min="2018-01-01" max="2025-12-31" 
+                  onChange={(e) => setDateFilters(p => ({...p, endDate: e.target.value}))}
+                  className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+              </div>
+
+              {/* Apply Filter Button */}
+              <div className="flex items-center space-x-2 mx-12">
+                  <button className='download-btn' onClick={filterApplyHandler}>Apply Filter</button>
               </div>
           </div>
 

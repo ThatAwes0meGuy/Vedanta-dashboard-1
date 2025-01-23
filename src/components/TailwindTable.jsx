@@ -3,13 +3,11 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
 const TailwindTable = ({ observation, analysis }) => {
-  const [textArea, setTextArea] = useState(analysis);
-
-  // Sync state with prop when prop changes
-  useEffect(() => {
-    setTextArea(analysis);
-  }, [analysis]);
-
+  const observationTable = [
+    {label: "Observation & Analysis", text: observation},
+    {label: "Recommendations", text: analysis},
+    {label: "Remarks", text: ""}
+  ]
   // Handle download as PDF
   const handleDownloadPDF = async () => {
     const element = document.getElementById("print-area");
@@ -41,79 +39,23 @@ const TailwindTable = ({ observation, analysis }) => {
         <table className="table-auto w-full bg-white shadow-lg rounded-lg overflow-hidden">
           <thead className="bg-blue-500 text-white">
             <tr>
-              <th className="px-4 py-2 text-left w-1/2">Observations</th>
-              <th className="px-4 py-2 text-left w-1/2">Expert Analysis</th>
-              <th className="px-4 py-2 text-left w-1/4">Issue Resolved</th>
+              <th className="px-4 py-2 text-left w-1/2">Observation</th>
+              <th className="px-4 py-2 text-left w-1/2">Observed Value</th>
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b">
-              <td className="px-4 py-2 w-1/2">
-                {observation.length ? observation : "Shift 1 observation"}
-              </td>
-              <td className="px-4 py-2 w-1/2">
-                <textarea
-                  className="w-full border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                  rows="3"
-                  value={textArea}
-                  onChange={(e) => setTextArea(e.target.value)}
-                  placeholder="Enter expert analysis"
-                ></textarea>
-              </td>
-              <td className="px-4 py-2 w-1/4">
-                <div className="flex">
-                  <input type="checkbox" id="Resolved_obs" className="peer hidden" />
-                  <label
-                    htmlFor="Resolved_obs"
-                    className="select-none cursor-pointer rounded-lg py-3 px-6 font-bold transition-colors duration-200 ease-in-out peer-checked:bg-green-200 peer-checked"
-                  >
-                    Mark as resolved
-                  </label>
-                </div>
-              </td>
-            </tr>
-            <tr className="border-b">
-              <td className="px-4 py-2 w-1/2">Shift 2 Observation</td>
-              <td className="px-4 py-2 w-1/2">
-                <textarea
-                  className="w-full border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                  rows="3"
-                  placeholder="Enter expert analysis"
-                ></textarea>
-              </td>
-              <td className="px-4 py-2 w-1/4">
-                <div className="flex">
-                  <input type="checkbox" id="Resolved_ex" className="peer hidden" />
-                  <label
-                    htmlFor="Resolved_ex"
-                    className="select-none cursor-pointer rounded-lg py-3 px-6 font-bold transition-colors duration-200 ease-in-out peer-checked:bg-green-200 peer-checked"
-                  >
-                    Mark as resolved
-                  </label>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td className="px-4 py-2 w-1/2">Shift 3 Observation</td>
-              <td className="px-4 py-2 w-1/2">
-                <textarea
-                  className="w-full border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                  rows="3"
-                  placeholder="Enter expert analysis"
-                ></textarea>
-              </td>
-              <td className="px-4 py-2 w-1/4">
-                <div className="flex">
-                  <input type="checkbox" id="Resolved_iss" className="peer hidden" />
-                  <label
-                    htmlFor="Resolved_iss"
-                    className="select-none cursor-pointer rounded-lg py-3 px-6 font-bold transition-colors duration-200 ease-in-out peer-checked:bg-green-200 peer-checked"
-                  >
-                    Mark as resolved
-                  </label>
-                </div>
-              </td>
-            </tr>
+            {
+              observationTable.map(({label, text}) =>  
+              <tr className="border-b">
+                <td className="px-8 py-6 w-1/2">
+                  {label}
+                </td>
+                <td className="px-4 py-6 w-1/2">
+                {text.length ? text : "NA"}
+                </td>
+              </tr>
+            )
+            }
           </tbody>
         </table>
       </div>

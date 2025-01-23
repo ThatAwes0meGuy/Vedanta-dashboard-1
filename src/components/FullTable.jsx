@@ -1,7 +1,22 @@
+import { useState, useEffect } from "react";
 import Spreadsheet from "react-spreadsheet";
 
 const FullTable = ({columnLabels, tableData}) => {
     const isAdmin = localStorage.getItem('role') === 'ADMIN'
+    const [deltaRowsDispatch, setDeltaRowsDispatch] = useState([])
+    useEffect(() => {
+        const dispatcher = () => {
+            // Dispatch the updated rows to firebase by serial No
+            console.log('deltaRowsDispatch', deltaRowsDispatch)
+            // Reload the page
+        }
+        dispatcher()
+    }, [deltaRowsDispatch])
+    const spreadSheetChangeHandler = (changedRows) => {
+        const deltaRows = findDelta(tableData, changedRows);
+        console.log('deltaRows', deltaRows)
+        setDeltaRowsDispatch(deltaRows)
+    }
     const handleAddRow = () => {}
     return<div className="p-4 bg-gray-100 rounded-lg shadow-md">
     {/* Header with buttons */}
@@ -28,16 +43,13 @@ const FullTable = ({columnLabels, tableData}) => {
         </div>
         }
     </div>
-
     {/* Table */}
     <div className="overflow-auto">
         {tableData.length ? (
             <Spreadsheet 
                 columnLabels={columnLabels} 
                 data={tableData} 
-                onChange={d => {
-                    console.log('date', d)
-                }}
+                onChange={spreadSheetChangeHandler}
             />
         ) : (
             <p className="text-gray-500">No data available</p>
@@ -47,5 +59,5 @@ const FullTable = ({columnLabels, tableData}) => {
 
 }
 
-
+// machineData -> tableData => newTableData -> machineData
 export default FullTable
