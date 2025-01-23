@@ -1,4 +1,4 @@
-import { UploadIcon } from '../Icons/Icons';
+import { UploadIcon } from '../../Icons/Icons';
 import * as XLSX from 'xlsx/xlsx.mjs';
 
 const UploadBtn = ({ data = [], fileName }) => {

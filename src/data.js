@@ -19,7 +19,7 @@
 export const MACHINE_DATA = [
   {
     Sl_No: 1,
-    Date_of_Visit: '2024-11-01 ',
+    Date_of_Visit: '2024-11-01',
     Main_WorkCtr: 'CMP_MECH',
     Equip_Tag_No: ' 76-CM-0002',
     Frequency: 'WEEKLY',

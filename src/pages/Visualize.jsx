@@ -11,10 +11,11 @@ import {
   Legend,
 } from 'chart.js';
 
-import {extractMachines, filterHealthByMachineRange, RANGE, extractPlants} from '../utils/pageFilter'
+import {extractMachines, filterHealth, RANGE, extractPlants, extractEquipment} from '../utils/pageFilter'
 import ObservationScreen from '../components/ObservationScreen';
 import TailwindTable from '../components/TailwindTable';
 import ExcelTable from '../components/ExcelTable';
+import { Dropdown } from '../components/Dropdown';
 // Register chart components
 ChartJS.register(
   CategoryScale,
@@ -27,16 +28,23 @@ ChartJS.register(
 
 const Visualizer = ({machineData}) => {
    // State for dropdowns
+   const [filteredMachineData, setFilteredMachineData] = useState(filteredMachineData)
    const [machineDropdownValue, setMachineDropdownValue] = useState('ALH_MECH');
    const [plantDropdown, setPlantDropdown] = useState('Smelter 1');
-   const [summary, setSummary] = useState({observation: '', analysis: ''});
+   const [equipmentDropdown, setEquipmentDropdown] = useState('Select')
    const [dateFilters, setDateFilters] = useState({
-    startDate: moment(new Date()).format("DD/MM/YYYY"),
-    endDate: moment(new Date()).format("DD/MM/YYYY")
-   })
-   const machines = extractMachines(machineData);
+     startDate: moment(new Date()).format("DD/MM/YYYY"),
+     endDate: moment(new Date()).format("DD/MM/YYYY")
+    })
+
+   const [summary, setSummary] = useState({observation: '', analysis: ''});
+   
+   const machines = extractMachines(filteredMachineData);
+   const equipments = extractEquipment(filteredMachineData)
    const plants = extractPlants();
-   const {datesList, healthList, summaries} = filterHealthByMachineRange(machineData, machineDropdownValue, RANGE.DAILY);
+
+   const {datesList, healthList, summaries} = filterHealth(filteredMachineData, machineDropdownValue, plantDropdown, dateFilters, equipmentDropdown);
+   
    const data = {
     labels: datesList, 
     datasets: [
@@ -59,8 +67,6 @@ const Visualizer = ({machineData}) => {
         },
     ],
   };
-
-  const filterApplyHandler = () => {}
 
 const options = {
   responsive: true,
@@ -124,33 +130,33 @@ const options = {
         <div className="flex flex-col p-8 bg-gray-100">
           {/* Dropdowns */}
           <div className="flex items-center mb-6">
-              {/* Dropdown 1 */}
-              <div className="flex items-center space-x-2 mx-12">
-                  <label htmlFor="machineDropdownValue" className="text-gray-700 font-medium">
-                      Area:
-                  </label>
-                  <select
-                      id="machineDropdownValue"
-                      value={machineDropdownValue}
-                      onChange={(e) => setMachineDropdownValue(e.target.value)}
-                      className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  >
-                    {machines?.map((machine) => <option value={machine}>{machine}</option>)}
-                  </select>
+            {/* Dropdown 1 */}
+            <div className="flex items-center space-x-2 mx-12">
+                  <Dropdown 
+                      dropdownLabel="Plant"
+                      dropdownList={plants}
+                      currentValue={plantDropdown}
+                      setDropdownValue={setPlantDropdown}
+                  />
               </div>
-               {/* Dropdown 2 */}
+              {/* Dropdown 2 */}
+              <div className="flex items-center space-x-2 mx-12">
+                  <Dropdown 
+                    dropdownLabel="Area"
+                    dropdownList={machines}
+                    currentValue={machineDropdownValue}
+                    setDropdownValue={setMachineDropdownValue}
+                  />
+              </div>
+
+               {/* Dropdown 3 */}
                <div className="flex items-center space-x-2 mx-12">
-                  <label htmlFor="plantDropdown" className="text-gray-700 font-medium">
-                      Plant:
-                  </label>
-                  <select
-                      id="plantDropdown"
-                      value={plantDropdown}
-                      onChange={(e) => setPlantDropdown(e.target.value)}
-                      className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  >
-                    {plants?.map((plant) => <option value={plant}>{plant}</option>)}
-                  </select>
+                  <Dropdown 
+                    dropdownLabel="Equipment"
+                    dropdownList={equipments}
+                    currentValue={equipmentDropdown}
+                    setDropdownValue={setEquipmentDropdown}
+                  />
               </div>
 
                {/* Dropdown start date */}
@@ -162,7 +168,7 @@ const options = {
                     type="date"
                     id="start-date"
                     name="start-date"
-                    value={"2025-01-01"}
+                    value={dateFilters.startDate}
                     min="2018-01-01"
                     max="2025-12-31" 
                     onChange={(e) => setDateFilters(p => ({...p, startDate: e.target.value}))}
@@ -178,14 +184,9 @@ const options = {
                   <input 
                   type="date"
                   id="end-date" name="end-date" 
-                  value={"2025-01-01"} min="2018-01-01" max="2025-12-31" 
+                  value={dateFilters.endDate} min="2018-01-01" max="2025-12-31" 
                   onChange={(e) => setDateFilters(p => ({...p, endDate: e.target.value}))}
                   className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
-              </div>
-
-              {/* Apply Filter Button */}
-              <div className="flex items-center space-x-2 mx-12">
-                  <button className='download-btn' onClick={filterApplyHandler}>Apply Filter</button>
               </div>
           </div>
 

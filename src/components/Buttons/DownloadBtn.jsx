@@ -1,4 +1,4 @@
-import { DownloadIcon } from "../Icons/Icons";
+import { DownloadIcon } from "../../Icons/Icons";
 import * as XLSX from "xlsx/xlsx.mjs";
 
 const DownloadBtn = ({ data = [], fileName }) => {

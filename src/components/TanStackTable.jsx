@@ -7,8 +7,8 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
-import DownloadBtn from './DownloadBtn';
-import UploadBtn from './UploadBtn';
+import DownloadBtn from './Buttons/DownloadBtn';
+import UploadBtn from './Buttons/UploadBtn';
 import DebouncedInput from './DebouncedInput';
 import { SearchIcon } from '../Icons/Icons';
 

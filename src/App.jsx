@@ -8,7 +8,7 @@ import { MyContext } from "./MyContext";
 
 import { db } from './firebase';
 import Login from './pages/LoginPage';
-import SignUp from './components/Signup';
+import SignUp from './pages/Signup';
 import ProtectedRoute from "./hooks/ProtectedRoute";
 import { AuthProvider } from './hooks/AuthContext';
 import { useEffect, useState } from 'react';

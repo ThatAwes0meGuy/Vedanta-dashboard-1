@@ -11,9 +11,7 @@ export const HEALTH_STATUS = {
     MARGINAL: 500,
     CRITICAL: 750
 }
-export const machineFilter = ({data, filterString}) => {
-    return data;
-}
+
 
 // Returns list of plants from the excel data
 export const extractPlants = () => {
@@ -25,26 +23,41 @@ export const extractMachines = (data) => {
     return uniq(data.map(machine => machine['Main_WorkCtr']))
 }
 
-// Filters table by name 
-export const filterByName = (data, machineName) => {
-    return data.filter((machine) => machine.Main_WorkCtr === machineName)
+// Returns list of equipments from the excel data
+export const extractEquipment = (data) => {
+    return uniq(data.map(machine => machine['Equip_Tag_No']))
 }
 
-// Gets health info of machine by range(monthly, daily)
-export const filterHealthByMachineRange = (data, machineName, range=RANGE.DAILY) => {
+// Filters table by name 
+export const filterByName = (data, machineName) => {
+    return data.filter((machine) => machine['Main_WorkCtr'] === machineName)
+}
+
+export const filterHealthDate = (data, )
+// Gets health info of machine
+export const filterHealth = (data, machineName='', plantName='', dateFilters={}, equipmentFilter='') => {
+    // Filters the machineData based on filters
     // Daily range
     let datesList = [];
     let healthList = [];
     let summaries = []
-   if(range === RANGE.DAILY){
+    console.log('data', data)
     data.map((machine) => {
-        if(machine.Main_WorkCtr === machineName){
+        const machineDate = new Date(machine['Date_of_Visit'])
+        const startDate = new Date(dateFilters?.startDate)
+        const endDate = new Date(dateFilters?.endDate)
+        
+        const dateMatch = Boolean((machineDate >= startDate && machineDate <= endDate))
+        const machineNameMatch = Boolean(machine['Main_WorkCtr'] === machineName)
+        const plantMatch = Boolean(plantName) 
+        const equipmentMatch = Boolean(machine['Equip_Tag_No'] === equipmentFilter)
+        console.log('equipFilter', equipmentFilter)
+        if(dateMatch && machineNameMatch && plantMatch && equipmentMatch){
             datesList.push(machine.Date_of_Visit)
-            healthList.push(HEALTH_STATUS[machine.Health_Status.toUpperCase()])
+            healthList.push(HEALTH_STATUS[machine['Health_Status'].toUpperCase()])
             summaries.push({observation: machine.Observations_Analysis, analysis: machine.Recommendations, remarks: machine.Remarks})
         }
     });
-   }
     return {datesList, healthList,summaries}
 }
 
