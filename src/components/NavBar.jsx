@@ -6,14 +6,16 @@ import { useAuth } from "../hooks/AuthContext";
 const NavBar = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
-
+  const IS_ADMIN = localStorage.getItem('role') === 'ADMIN'
   const links = [
     { label: 'Home', url: '/' },
-    { label: 'Health Check', url: '/table1' },
-    { label: 'Table 2', url: '/table2' },
-    { label: 'Table 3', url: '/table3' },
     { label: 'Visualize', url: '/visualize' },
   ];
+  IS_ADMIN && links.push(    
+  { label: 'Health Check', url: '/table1' },
+  { label: 'Table 2', url: '/table2' },
+  { label: 'Table 3', url: '/table3' },
+)
   const handleLogout = async () => {
     await logout();
     localStorage.clear()
@@ -57,7 +59,7 @@ const NavBar = () => {
   className="inline-flex flex-col items-center gap-2 rounded-lg px-4 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:text-indigo-500 focus-visible:ring active:text-indigo-600 md:text-base"
 >
   {
-    localStorage.getItem('role') === 'ADMIN' && <span className="inline-flex items-center rounded-md bg-yellow-50 text-center px-2 py-1 text-xs font-medium outline-none text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
+    IS_ADMIN && <span className="inline-flex items-center rounded-md bg-yellow-50 text-center px-2 py-1 text-xs font-medium outline-none text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
     Admin
   </span>
   }
