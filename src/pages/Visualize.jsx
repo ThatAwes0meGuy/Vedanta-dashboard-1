@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { Bar } from 'react-chartjs-2';
 import moment from 'moment/moment';
 import {
@@ -27,18 +27,27 @@ ChartJS.register(
 const Visualizer = ({machineData}) => {
    // State for dropdowns
    const [filteredMachineData, setFilteredMachineData] = useState(machineData)
-   const [machineDropdownValue, setMachineDropdownValue] = useState('ALH_MECH');
-   const [plantDropdown, setPlantDropdown] = useState('Smelter 1');
-   const [equipmentDropdown, setEquipmentDropdown] = useState('Select')
+   const [machineDropdownValue, setMachineDropdownValue] = useState('');
+   const [plantDropdown, setPlantDropdown] = useState('');
+   const [equipmentDropdown, setEquipmentDropdown] = useState('')
    const [dateFilters, setDateFilters] = useState({
      startDate: moment(new Date()).format("DD/MM/YYYY"),
      endDate: moment(new Date()).format("DD/MM/YYYY")
     })
 
-   const [summary, setSummary] = useState({observation: '', analysis: '', equipment: ''});
    
-   const machines = extractMachines(filteredMachineData);
-   const equipments = extractEquipment(filteredMachineData)
+   const [summary, setSummary] = useState({observation: '', analysis: '', equipment: ''});
+   const machines = extractMachines(filteredMachineData, {
+    machineDropdownValue,
+    plantDropdown,
+    equipmentDropdown
+   });
+   if(machines.length === 0) setMachineDropdownValue('')
+   const equipments = extractEquipment(filteredMachineData, {
+    machineDropdownValue,
+    plantDropdown,
+    equipmentDropdown
+   })
    const plants = extractPlants();
 
    const {datesList, healthList, summaries} = filterHealth(filteredMachineData, machineDropdownValue, plantDropdown, dateFilters);
@@ -190,7 +199,7 @@ const options = {
 
               {/* Dropdown 4 */}
               <div className="flex items-center mx-6">
-                Drive/Driven: {summary?.driveDriven}
+                <b className='mr-2'>Drive/Driven</b> {summary?.driveDriven}
               </div>
           </div>
 

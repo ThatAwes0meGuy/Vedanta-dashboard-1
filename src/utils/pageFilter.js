@@ -15,24 +15,62 @@ export const HEALTH_STATUS = {
 
 // Returns list of plants from the excel data
 export const extractPlants = () => {
-    return ["Smelter 1", "Smelter 2"]
+    return ["2 MTPA", "3 MTPA"]
 }
 
-// Returns list of machines from the excel data
-export const extractMachines = (data) => {
-    return uniq(data.map(machine => machine['Main_WorkCtr']))
-}
+
+export const extractMachines = (data, { machineDropdownValue, equipmentDropdown }) => {
+    console.log('machineDropdownValue:', machineDropdownValue);
+    console.log('equipmentDropdown:', equipmentDropdown);
+
+    if (equipmentDropdown.length) {
+        // Filter and map only the matching items
+        const filterResults = uniq(
+            data.filter(
+                machine =>
+                    machine['Equip_Tag_No'] === equipmentDropdown
+            ).map(machine => machine['Main_WorkCtr'])
+        );
+        console.log('filterResults if:', filterResults);
+        return filterResults;
+    } else {
+        // Return unique list of all Main_WorkCtr
+        const filterResults = uniq(data.map(machine => machine['Main_WorkCtr']));
+        console.log('filterResults else:', filterResults);
+        return filterResults;
+    }
+};
+
 
 // Returns list of equipments from the excel data
-export const extractEquipment = (data) => {
-    return uniq(data.map(machine => machine['Equip_Tag_No']))
+export const extractEquipment = (data, {machineDropdownValue,equipmentDropdown, plantDropdown}) => {
+    // if(machineDropdownValue.length && equipmentDropdown.length){
+    //     // get items by machineName
+    //     uniq(data.filter(machine => machine['Main_WorkCtr'] === machineDropdownValue && machine['Equip_Tag_No'] === equipmentDropdown))
+    // }
+    // return uniq(data.map(machine => machine['Equip_Tag_No']))
+    if (machineDropdownValue.length) {
+        // Filter and map only the matching items
+        const filterResults = uniq(
+            data.filter(
+                machine =>
+                    machine['Main_WorkCtr'] === machineDropdownValue
+            ).map(machine => machine['Equip_Tag_No'])
+        );
+        console.log('filterResults if:', filterResults);
+        return filterResults;
+    } else {
+        // Return unique list of all Main_WorkCtr
+        const filterResults = uniq(data.map(machine => machine['Main_WorkCtr']));
+        console.log('filterResults else:', filterResults);
+        return filterResults;
+    }
 }
 
 // Filters table by name 
 export const filterByName = (data, machineName) => {
     return data.filter((machine) => machine['Main_WorkCtr'] === machineName)
 }
-
 
 // Gets health info of machine
 export const filterHealth = (data, machineName='', plantName='', dateFilters={}, equipmentFilter='') => {
@@ -49,8 +87,9 @@ export const filterHealth = (data, machineName='', plantName='', dateFilters={},
         const dateMatch = Boolean((machineDate >= startDate && machineDate <= endDate))
         const machineNameMatch = Boolean(machine['Main_WorkCtr'] === machineName)
         const plantMatch = Boolean(plantName) 
+        const equipmentMatch = Boolean(machine['Equip_Tag_No'] === equipmentFilter)
         console.log('equipFilter', equipmentFilter)
-        if(dateMatch && machineNameMatch && plantMatch){
+        if(dateMatch && machineNameMatch && plantMatch && equipmentMatch){
             datesList.push(machine.Date_of_Visit)
             healthList.push(HEALTH_STATUS[machine['Health_Status'].toUpperCase()])
             summaries.push({observation: machine.Observations_Analysis, analysis: machine.Recommendations, remarks: machine.Remarks, driveDriven: machine['Drive_Driven_Max_Vibrations']})
