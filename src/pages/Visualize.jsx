@@ -12,9 +12,7 @@ import {
 } from 'chart.js';
 
 import {extractMachines, filterHealth, RANGE, extractPlants, extractEquipment} from '../utils/pageFilter'
-import ObservationScreen from '../components/ObservationScreen';
 import TailwindTable from '../components/TailwindTable';
-import ExcelTable from '../components/ExcelTable';
 import { Dropdown } from '../components/Dropdown';
 // Register chart components
 ChartJS.register(
@@ -28,7 +26,7 @@ ChartJS.register(
 
 const Visualizer = ({machineData}) => {
    // State for dropdowns
-   const [filteredMachineData, setFilteredMachineData] = useState(filteredMachineData)
+   const [filteredMachineData, setFilteredMachineData] = useState(machineData)
    const [machineDropdownValue, setMachineDropdownValue] = useState('ALH_MECH');
    const [plantDropdown, setPlantDropdown] = useState('Smelter 1');
    const [equipmentDropdown, setEquipmentDropdown] = useState('Select')
@@ -37,13 +35,13 @@ const Visualizer = ({machineData}) => {
      endDate: moment(new Date()).format("DD/MM/YYYY")
     })
 
-   const [summary, setSummary] = useState({observation: '', analysis: ''});
+   const [summary, setSummary] = useState({observation: '', analysis: '', equipment: ''});
    
    const machines = extractMachines(filteredMachineData);
    const equipments = extractEquipment(filteredMachineData)
    const plants = extractPlants();
 
-   const {datesList, healthList, summaries} = filterHealth(filteredMachineData, machineDropdownValue, plantDropdown, dateFilters, equipmentDropdown);
+   const {datesList, healthList, summaries} = filterHealth(filteredMachineData, machineDropdownValue, plantDropdown, dateFilters);
    
    const data = {
     labels: datesList, 
@@ -121,6 +119,7 @@ const options = {
       // Get the index of the clicked bar
       const barIndex = elements[0].index;
       setSummary(summaries[barIndex])
+      
     }
   },
 };
@@ -131,7 +130,7 @@ const options = {
           {/* Dropdowns */}
           <div className="flex items-center mb-6">
             {/* Dropdown 1 */}
-            <div className="flex items-center space-x-2 mx-12">
+            <div className="flex items-center mx-6">
                   <Dropdown 
                       dropdownLabel="Plant"
                       dropdownList={plants}
@@ -140,7 +139,7 @@ const options = {
                   />
               </div>
               {/* Dropdown 2 */}
-              <div className="flex items-center space-x-2 mx-12">
+              <div className="flex items-center mx-6">
                   <Dropdown 
                     dropdownLabel="Area"
                     dropdownList={machines}
@@ -149,18 +148,8 @@ const options = {
                   />
               </div>
 
-               {/* Dropdown 3 */}
-               <div className="flex items-center space-x-2 mx-12">
-                  <Dropdown 
-                    dropdownLabel="Equipment"
-                    dropdownList={equipments}
-                    currentValue={equipmentDropdown}
-                    setDropdownValue={setEquipmentDropdown}
-                  />
-              </div>
-
                {/* Dropdown start date */}
-               <div className="flex items-center space-x-2 mx-12">
+               <div className="flex items-center mx-6">
                   <label htmlFor="start-date" className="text-gray-700 font-medium">
                       Start Date:
                   </label>
@@ -177,7 +166,7 @@ const options = {
               </div>
                
                {/* Dropdown end date */}
-               <div className="flex items-center space-x-2 mx-12">
+               <div className="flex items-center mx-6">
                   <label htmlFor="end-date" className="text-gray-700 font-medium">
                       End Date:
                   </label>
@@ -187,6 +176,21 @@ const options = {
                   value={dateFilters.endDate} min="2018-01-01" max="2025-12-31" 
                   onChange={(e) => setDateFilters(p => ({...p, endDate: e.target.value}))}
                   className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+              </div>
+
+               {/* Dropdown 3 */}
+               <div className="flex items-center mx-6">
+                  <Dropdown 
+                    dropdownLabel="Equipment"
+                    dropdownList={equipments}
+                    currentValue={equipmentDropdown}
+                    setDropdownValue={setEquipmentDropdown}
+                  />
+              </div>
+
+              {/* Dropdown 4 */}
+              <div className="flex items-center mx-6">
+                Drive/Driven: {summary?.driveDriven}
               </div>
           </div>
 
@@ -210,7 +214,7 @@ const options = {
           </div>
         </div>
         <div>
-        <TailwindTable observation={summary?.observation} analysis={summary?.analysis}/>
+        <TailwindTable observation={summary?.observation} analysis={summary?.analysis} equipment={summary?.equipment}/>
         </div>
       </div>
   );

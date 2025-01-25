@@ -99,13 +99,13 @@ const App = () => {
         </div>
       </div>
     );
-
+      const IS_ADMIN = localStorage.getItem('role') === 'ADMIN'
   return (
     <MyContext.Provider value={{ tableData, setTableData }}>
       <AuthProvider>
         <NavBar />
         <Routes>
-          <Route
+          {IS_ADMIN && <Route
             path="/table1"
             element={
               <ProtectedRoute>
@@ -121,9 +121,9 @@ const App = () => {
                 )}
               </ProtectedRoute>
             }
-          />
-          <Route path="/table2" element={<ProtectedRoute><FullTable columnLabels={columnLabels} tableData={tableData} /></ProtectedRoute>} />
-          <Route path="/table3" element={<ProtectedRoute><FullTable columnLabels={columnLabels} tableData={tableData} /></ProtectedRoute>} />
+          />}
+          {IS_ADMIN && <Route path="/table2" element={<ProtectedRoute><FullTable columnLabels={columnLabels} tableData={tableData} /></ProtectedRoute>} />}
+          {IS_ADMIN&& <Route path="/table3" element={<ProtectedRoute><FullTable columnLabels={columnLabels} tableData={tableData} /></ProtectedRoute>} />}
           <Route path="/visualize" element={<ProtectedRoute><Visualize machineData={machineData} /></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/sign-up" element={<SignUp />} />

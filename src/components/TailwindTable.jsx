@@ -27,10 +27,11 @@ const TailwindTable = ({ observation, analysis }) => {
       <div className="flex justify-between items-center w-full max-w-8xl px-12 mb-4">
         <h1 className="text-2xl font-bold">Health Observation</h1>
         <button
-          onClick={handleDownloadPDF}
+          // onClick={handleDownloadPDF}
+          onClick={() => window.print()}
           className="bg-blue-500 text-white font-medium px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition duration-200"
         >
-          Download
+          Download report
         </button>
       </div>
 

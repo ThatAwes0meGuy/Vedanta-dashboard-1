@@ -33,7 +33,7 @@ export const filterByName = (data, machineName) => {
     return data.filter((machine) => machine['Main_WorkCtr'] === machineName)
 }
 
-export const filterHealthDate = (data, )
+
 // Gets health info of machine
 export const filterHealth = (data, machineName='', plantName='', dateFilters={}, equipmentFilter='') => {
     // Filters the machineData based on filters
@@ -41,7 +41,6 @@ export const filterHealth = (data, machineName='', plantName='', dateFilters={},
     let datesList = [];
     let healthList = [];
     let summaries = []
-    console.log('data', data)
     data.map((machine) => {
         const machineDate = new Date(machine['Date_of_Visit'])
         const startDate = new Date(dateFilters?.startDate)
@@ -50,12 +49,11 @@ export const filterHealth = (data, machineName='', plantName='', dateFilters={},
         const dateMatch = Boolean((machineDate >= startDate && machineDate <= endDate))
         const machineNameMatch = Boolean(machine['Main_WorkCtr'] === machineName)
         const plantMatch = Boolean(plantName) 
-        const equipmentMatch = Boolean(machine['Equip_Tag_No'] === equipmentFilter)
         console.log('equipFilter', equipmentFilter)
-        if(dateMatch && machineNameMatch && plantMatch && equipmentMatch){
+        if(dateMatch && machineNameMatch && plantMatch){
             datesList.push(machine.Date_of_Visit)
             healthList.push(HEALTH_STATUS[machine['Health_Status'].toUpperCase()])
-            summaries.push({observation: machine.Observations_Analysis, analysis: machine.Recommendations, remarks: machine.Remarks})
+            summaries.push({observation: machine.Observations_Analysis, analysis: machine.Recommendations, remarks: machine.Remarks, driveDriven: machine['Drive_Driven_Max_Vibrations']})
         }
     });
     return {datesList, healthList,summaries}
